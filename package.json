@@ -6,13 +6,13 @@
   "devDependencies": {
     "babel-core": "^4.7.4",
     "babel-loader": "^4.1.0",
+    "eslint": "^1.1.0",
+    "eslint-plugin-react": "^3.2.3",
     "react-hot-loader": "^1.2.2",
     "webpack": "^1.7.2",
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
-    "eslint": "^1.1.0",
-    "eslint-plugin-react": "^3.2.3",
     "react": "^0.13.0"
   }
 }
