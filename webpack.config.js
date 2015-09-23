@@ -1,22 +1,38 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var PROD = (process.env.NODE_ENV == 'production');
+
 module.exports = {
-  devtool: 'eval',
-  entry: [
-    'webpack-hot-middleware/client',
-    './scripts/index'
-  ],
+  devtool: PROD ? 'source-map' : 'eval',
+  entry: PROD
+    ? [ './scripts/index' ]
+    : [ 'webpack-hot-middleware/client', './scripts/index' ],
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'bundle.js',
     publicPath: '/'
   },
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ],
+  plugins:
+    PROD
+    ? [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.DefinePlugin({
+          'process.env': {
+            'NODE_ENV': JSON.stringify('production')
+          }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+          compressor: {
+            warnings: false
+          }
+        })
+      ]
+    : [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+      ],
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
