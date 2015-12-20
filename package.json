@@ -29,6 +29,8 @@
     "d3": "^3.5.6",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
+    "react-select": "^1.0.0-beta7",
+    "react-viz": "file:../react-viz",
     "underscore": "^1.8.3"
   }
 }
