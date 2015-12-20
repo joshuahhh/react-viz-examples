@@ -59,6 +59,14 @@ let EpicyclicGearing = React.createClass({
   render() {
     let {selectedMode: {value, radius1}, angle, offset} = this.state;
 
+    let gears = [
+      {className: 'annulus', teeth: 80, radius: -radius * 5, annulus: true},
+      {className: 'sun', teeth: 16, radius: radius},
+      {className: 'planet', teeth: 32, radius: -radius * 2, x: 0, y: -radius * 3},
+      {className: 'planet', teeth: 32, radius: -radius * 2, x: -radius * 3 * x, y: -radius * 3 * y},
+      {className: 'planet', teeth: 32, radius: -radius * 2, x: radius * 3 * x, y: -radius * 3 * y},
+    ];
+
     return (
       <div style={{position: 'relative'}}>
         <div style={{position: 'absolute', width: 200}}>
@@ -68,21 +76,11 @@ let EpicyclicGearing = React.createClass({
           <G x={width / 2} y={height / 2} rotate={angle / radius1 + offset} scale={.55}>
             <G ref='svg'>
               <G ref='frame'>
-                <G className='annulus' rotate={angle / (-radius * 5)}>
-                  <path d={gear({teeth: 80, radius: -radius * 5, annulus: true})} />
-                </G>
-                <G className='sun' rotate={angle / (radius)}>
-                  <path d={gear({teeth: 16, radius: radius})} />
-                </G>
-                <G className='planet' rotate={angle / (-radius * 2)} y={-radius * 3}>
-                  <path d={gear({teeth: 32, radius: -radius * 2})} />
-                </G>
-                <G className='planet' rotate={angle / (-radius * 2)} x={-radius * 3 * x} y={-radius * 3 * y}>
-                  <path d={gear({teeth: 32, radius: -radius * 2})} />
-                </G>
-                <G className='planet' rotate={angle / (-radius * 2)} x={radius * 3 * x} y={-radius * 3 * y}>
-                  <path d={gear({teeth: 32, radius: -radius * 2})} />
-                </G>
+                {gears.map(({className, teeth, radius, annulus, x, y}) =>
+                  <G className={className} rotate={angle / radius} x={x} y={y}>
+                    <path d={gear({teeth, radius, annulus})} />
+                  </G>
+                )}
               </G>
             </G>
           </G>
