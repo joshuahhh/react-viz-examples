@@ -10,9 +10,8 @@ var width = 960,
     height = 500,
     radius = 80,
     x = Math.sin(2 * Math.PI / 3),
-    y = Math.cos(2 * Math.PI / 3);
-
-var speed = 4;
+    y = Math.cos(2 * Math.PI / 3),
+    speed = 4;
 
 function gear(d) {
   var n = d.teeth,
@@ -59,14 +58,6 @@ let EpicyclicGearing = React.createClass({
   render() {
     let {selectedMode: {value, radius1}, angle, offset} = this.state;
 
-    let gears = [
-      {className: 'annulus', teeth: 80, radius: -radius * 5, annulus: true},
-      {className: 'sun', teeth: 16, radius: radius},
-      {className: 'planet', teeth: 32, radius: -radius * 2, x: 0, y: -radius * 3},
-      {className: 'planet', teeth: 32, radius: -radius * 2, x: -radius * 3 * x, y: -radius * 3 * y},
-      {className: 'planet', teeth: 32, radius: -radius * 2, x: radius * 3 * x, y: -radius * 3 * y},
-    ];
-
     return (
       <div style={{position: 'relative'}}>
         <div style={{position: 'absolute', width: 200}}>
@@ -74,15 +65,14 @@ let EpicyclicGearing = React.createClass({
         </div>
         <svg width={width} height={height}>
           <G x={width / 2} y={height / 2} rotate={angle / radius1 + offset} scale={.55}>
-            <G ref='svg'>
-              <G ref='frame'>
-                {gears.map(({className, teeth, radius, annulus, x, y}) =>
-                  <G className={className} rotate={angle / radius} x={x} y={y}>
-                    <path d={gear({teeth, radius, annulus})} />
-                  </G>
-                )}
-              </G>
-            </G>
+            <Gear angle={angle} className='annulus' teeth={80} radius={-radius * 5} annulus={true} />
+            <Gear angle={angle} className='sun' teeth={16} radius={radius} />
+            <Gear angle={angle} className='planet' teeth={32} radius={-radius * 2}
+              x={0} y={-radius * 3} />
+            <Gear angle={angle} className='planet' teeth={32} radius={-radius * 2}
+              x={-radius * 3 * x} y={-radius * 3 * y} />
+            <Gear angle={angle} className='planet' teeth={32} radius={-radius * 2}
+              x={radius * 3 * x} y={-radius * 3 * y} />
           </G>
         </svg>
         <AnimationLoop step={(elapsed) => {
@@ -92,5 +82,10 @@ let EpicyclicGearing = React.createClass({
     );
   },
 });
+
+let Gear = ({angle, className, teeth, radius, annulus, x, y}) =>
+  <G className={className} rotate={angle / radius} x={x} y={y}>
+    <path d={gear({teeth, radius, annulus})} />
+  </G>;
 
 export default EpicyclicGearing;
